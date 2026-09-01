@@ -255,6 +255,10 @@ FROM ghcr.io/linuxserver/baseimage-selkies:dev
 ARG BUILD_DATE
 ARG VERSION
 ARG BROKER_RELEASE
+# Where the broker comes from. Overridable so a fork can bake in its own
+# branch (a launcher not upstream yet, for instance) without editing the
+# URLs below: --build-arg BROKER_REPO=owner/name --build-arg BROKER_RELEASE=ref
+ARG BROKER_REPO="romm-streaming/romm-broker"
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="thelamer"
 
@@ -571,12 +575,12 @@ RUN \
   echo "**** install broker ****" && \
   mkdir -p /tmp/broker && \
   if [ -z ${BROKER_RELEASE+x} ]; then \
-    BROKER_RELEASE=$(curl -sX GET "https://api.github.com/repos/romm-streaming/romm-broker/releases/latest" \
+    BROKER_RELEASE=$(curl -sX GET "https://api.github.com/repos/${BROKER_REPO}/releases/latest" \
     | jq -er '.tag_name'); \
   fi && \
   curl -o \
     /tmp/broker.tar.gz -L \
-    "https://github.com/romm-streaming/romm-broker/archive/${BROKER_RELEASE}.tar.gz" && \
+    "https://github.com/${BROKER_REPO}/archive/${BROKER_RELEASE}.tar.gz" && \
   tar xf \
     /tmp/broker.tar.gz -C \
     /tmp/broker/ --strip-components=1 && \
