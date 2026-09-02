@@ -1,0 +1,8 @@
+# Everything in this repo is copied into a Linux container, so nothing here
+# may ever be checked out with CRLF. s6 reads `s6-rc.d/*/type` byte for byte
+# and rejects `oneshot\r` with "must be oneshot, longrun, or bundle", and a
+# script whose shebang ends in \r fails to execute at all. A Windows clone
+# with core.autocrlf=true silently produces both.
+#
+# text=auto still lets git leave real binaries alone.
+* text=auto eol=lf
