@@ -21,3 +21,12 @@ if [[ "${BROKER_DEV_MODE,,}" == "true" ]]; then
 else
   sed -i "s/BROKERWEB/8000/g" ${NGINX_CONFIG}
 fi
+
+# patch selkies' pointer injection so an absolute mouse move still reaches a
+# game that holds Xwayland's pointer lock (see selkies-abs-motion-patch.py)
+INPUT_HANDLER=$(find /lsiopy -path "*/selkies/input_handler.py" -type f 2>/dev/null | head -1)
+if [ -n "${INPUT_HANDLER}" ]; then
+  python3 /usr/local/bin/selkies-abs-motion-patch.py "${INPUT_HANDLER}"
+else
+  echo "[ls.io-init] selkies input_handler.py not found, pointer patch skipped"
+fi

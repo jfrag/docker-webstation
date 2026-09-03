@@ -585,6 +585,7 @@ RUN \
     /tmp/broker.tar.gz -C \
     /tmp/broker/ --strip-components=1 && \
   pip install /tmp/broker --break-system-packages && \
+  pip install python-xlib --break-system-packages && \
   cd /tmp/broker/frontend && \
   npm install && \
   SUBFOLDER=/streaming/ npm run build && \
