@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-selkies:dev AS dolphin
+FROM lsiodev/selkies-base:ubunturesolute-version-5501a314 AS dolphin
 
 RUN \
   echo "**** install build deps ****" && \
@@ -43,7 +43,7 @@ RUN \
   make -j16 && \
   make install DESTDIR=/root-out
 
-FROM ghcr.io/linuxserver/baseimage-selkies:dev AS eden
+FROM lsiodev/selkies-base:ubunturesolute-version-5501a314 AS eden
 
 RUN \
   echo "**** install build deps ****" && \
@@ -148,7 +148,7 @@ RUN \
     dist/icon_variations/base.svg \
     /root-out/usr/share/icons/hicolor/scalable/apps/dev.eden_emu.eden.svg
 
-FROM ghcr.io/linuxserver/baseimage-selkies:dev AS cemu
+FROM lsiodev/selkies-base:ubunturesolute-version-5501a314 AS cemu
 
 RUN \
   echo "**** install build deps ****" && \
@@ -249,7 +249,7 @@ RUN \
     /root-out/usr/share/icons/hicolor/128x128/apps/info.cemu.Cemu.png
 
 # runtime stage
-FROM ghcr.io/linuxserver/baseimage-selkies:dev
+FROM lsiodev/selkies-base:ubunturesolute-version-5501a314
 
 # set version label
 ARG BUILD_DATE
@@ -267,7 +267,8 @@ ENV TITLE="Webstation" \
     SELKIES_RATE_CONTROL_MODE=cbr \
     PIXELFLUX_WAYLAND=true \
     SUBFOLDER="/streaming/" \
-    DOOMWADDIR="/config"
+    DOOMWADDIR="/config" \
+    PIXELFLUX_CU=5000
 
 RUN \
   echo "**** add icon ****" && \
@@ -371,7 +372,7 @@ RUN \
     -d /usr/share/libretro/autoconfig && \
   echo "**** install azahar ****" && \
   AZAHAR_URL=$(curl -sX GET "https://api.github.com/repos/azahar-emu/azahar/releases/latest" \
-    | jq -er '.assets[] | select(.name == "azahar-wayland.AppImage") | .browser_download_url') && \
+    | jq -er '.assets[] | select(.name == "azahar.AppImage") | .browser_download_url') && \
   curl -o \
     /tmp/azahar.app -L \
     "${AZAHAR_URL}" && \
