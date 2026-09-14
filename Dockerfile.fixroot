@@ -1,0 +1,12 @@
+# Correctif ponctuel: réapplique root/ sur l'image déjà construite.
+#
+# L'image de base est complète (émulateurs, broker, selkies); seuls les
+# fichiers de root/ y sont en CRLF, ce qui fait échouer s6-rc-compile au
+# démarrage. `COPY root /` les remplace par leur version LF sans rejouer la
+# couche d'installation, qui prend une heure et dépend d'une quinzaine
+# d'appels à api.github.com.
+#
+# À jeter dès qu'une reconstruction complète aura réussi.
+FROM ghcr.io/jfrag/webstation:romm-scummvm
+
+COPY root /
